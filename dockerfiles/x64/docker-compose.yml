@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+
+  logstash:
+    container_name: logstash-oss-x64
+    build:
+      context: ../../
+      dockerfile: dockerfiles/Dockerfile
+      args:
+        - VERSION=${LOGSTASH_VERSION:-7.13.2}
+        - ARCH=${ARCH}
+    image: "logstash-oss-with-opensearch-output-plugin:${VERSION}-x64"

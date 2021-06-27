@@ -6,6 +6,11 @@
 #
 #  Modifications Copyright OpenSearch Contributors. See
 #  GitHub history for details.
+require 'simplecov'
+SimpleCov.start
+
+require 'codecov'
+SimpleCov.formatter = SimpleCov::Formatter::Codecov
 
 require "logstash/devutils/rspec/spec_helper"
 

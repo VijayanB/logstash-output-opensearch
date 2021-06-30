@@ -3,13 +3,19 @@ on:
   push:
     tags:
       - v*
+    branches:
+      - "*"
 
 jobs:
   Build:
     name: Build and Install logstash-output-opensearch
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [ ubuntu-latest, macos-latest]
+        logstash-version: [ 7.13.2 ]
+    runs-on: ${{ matrix.platform }}
     env:
-      LOGSTASH_VERSION: "7.13.2"
+      LOGSTASH_VERSION: ${{ matrix.logstash-version }}
     steps:
       - name: Checkout plugin
         uses: actions/checkout@v1
@@ -18,13 +24,19 @@ jobs:
         run: |
           gem build logstash-output-opensearch.gemspec
 
+      - name: Set up OS related environment variables
+        run: |
+          os_name=`uname`
+          os_name_lower=`echo "print('$os_name'.lower())" | python`
+          echo "OS_NAME=${os_name_lower}" >> $GITHUB_ENV
+
       - name: Download and extract logstash
         run: |
           mkdir -p prepare-install;
           mv logstash-output-opensearch-*.gem prepare-install/logstash-output-opensearch.gem;
-          wget --no-verbose https://artifacts.elastic.co/downloads/logstash/logstash-oss-${{ env.LOGSTASH_VERSION }}-linux-x86_64.tar.gz -P prepare-install/;
+          wget --no-verbose https://artifacts.elastic.co/downloads/logstash/logstash-oss-${{ env.LOGSTASH_VERSION }}-{{ env.OS_NAME }}-x86_64.tar.gz -P prepare-install/;
           cd prepare-install;
-          tar xzf logstash-oss-${{ env.LOGSTASH_VERSION }}-linux-x86_64.tar.gz;
+          tar xzf logstash-oss-${{ env.LOGSTASH_VERSION }}-{{ env.OS_NAME }}-x86_64.tar.gz;
 
 
       - name: Install plugin
@@ -36,10 +48,10 @@ jobs:
       - name: Create artifact to upload
         run: |
           cd prepare-install;
-          tar -czf logstash-oss-with-opensearch-output-plugin-${{ env.LOGSTASH_VERSION }}-linux-x64.tar.gz logstash-${{ env.LOGSTASH_VERSION }}
+          tar -czf logstash-oss-with-opensearch-output-plugin-${{ env.LOGSTASH_VERSION }}-{{ env.OS_NAME }}-x64.tar.gz logstash-${{ env.LOGSTASH_VERSION }}
 
       - name: Upload logstash-oss-with-opensearch-output-plugin
         uses: actions/upload-artifact@v2
         with:
-          name: logstash-oss-with-opensearch-output-plugin-${{ env.LOGSTASH_VERSION }}-linux-x64
-          path: prepare-install/logstash-oss-with-opensearch-output-plugin-${{ env.LOGSTASH_VERSION }}-linux-x64.tar.gz
+          name: logstash-oss-with-opensearch-output-plugin-${{ env.LOGSTASH_VERSION }}-{{ env.OS_NAME }}-x64
+          path: prepare-install/logstash-oss-with-opensearch-output-plugin-${{ env.LOGSTASH_VERSION }}-{{ env.OS_NAME }}-x64.tar.gz

@@ -3,8 +3,7 @@ version: '3'
 services:
 
   logstash:
-    container_name: logstash-oss-arm64
-    env_file: ../docker.env
+    container_name: logstash-oss-${VERSION}-arm64
     build:
       context: ../../
       dockerfile: dockerfiles/Dockerfile

@@ -3,7 +3,7 @@ version: '3'
 services:
 
   logstash:
-    container_name: logstash-oss-x64
+    container_name: logstash-oss-${VERSION}-x64
     build:
       context: ../../
       dockerfile: dockerfiles/Dockerfile

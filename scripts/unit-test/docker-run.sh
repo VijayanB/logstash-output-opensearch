@@ -4,4 +4,5 @@
 set -ex
 
 cd scripts/unit-test;
+ci_env=`bash <(curl -s https://codecov.io/env)`
 docker-compose up --exit-code-from logstash logstash

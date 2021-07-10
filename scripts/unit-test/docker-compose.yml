@@ -11,4 +11,5 @@ services:
     environment:
       - SPEC_OPTS
       - LOG_LEVEL # devutils (>= 2.0.4) reads the ENV and sets LS logging
+      - CI=true
     tty: true

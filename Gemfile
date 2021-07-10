@@ -18,3 +18,9 @@ if Dir.exist?(logstash_path) && use_logstash_source
   gem 'logstash-core', :path => "#{logstash_path}/logstash-core"
   gem 'logstash-core-plugin-api', :path => "#{logstash_path}/logstash-core-plugin-api"
 end
+
+#Simplecov to generate coverage info
+gem 'simplecov', require: false
+
+#Simplecov-cobertura to generate an xml coverage file which can then be uploaded to Codecov
+gem 'simplecov-cobertura'

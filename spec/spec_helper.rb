@@ -7,6 +7,12 @@
 #  Modifications Copyright OpenSearch Contributors. See
 #  GitHub history for details.
 
+require 'simplecov'
+SimpleCov.start
+
+require 'simplecov-cobertura'
+SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
+
 require "logstash/devutils/rspec/spec_helper"
 
 require "logstash/outputs/opensearch"

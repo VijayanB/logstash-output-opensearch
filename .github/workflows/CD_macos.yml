@@ -4,7 +4,7 @@ on: [push]
 jobs:
   Build:
     name: Build and Install logstash-output-opensearch
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     env:
       LOGSTASH_VERSION: "7.13.2"
     steps:
@@ -19,9 +19,9 @@ jobs:
         run: |
           mkdir -p prepare-install;
           mv logstash-output-opensearch-*.gem prepare-install/logstash-output-opensearch.gem;
-          wget --no-verbose https://artifacts.elastic.co/downloads/logstash/logstash-oss-${{ env.LOGSTASH_VERSION }}-linux-x86_64.tar.gz -P prepare-install/;
+          wget --no-verbose https://artifacts.elastic.co/downloads/logstash/logstash-oss-${{ env.LOGSTASH_VERSION }}-darwin-x86_64.tar.gz -P prepare-install/;
           cd prepare-install;
-          tar xzf logstash-oss-${{ env.LOGSTASH_VERSION }}-linux-x86_64.tar.gz;
+          tar xzf logstash-oss-${{ env.LOGSTASH_VERSION }}-darwin-x86_64.tar.gz;
 
 
       - name: Install plugin
@@ -33,10 +33,10 @@ jobs:
       - name: Create artifact to upload
         run: |
           cd prepare-install;
-          tar -czf logstash-oss-with-opensearch-output-plugin-${{ env.LOGSTASH_VERSION }}-linux-x64.tar.gz logstash-${{ env.LOGSTASH_VERSION }}
+          tar -czf logstash-oss-with-opensearch-output-plugin-${{ env.LOGSTASH_VERSION }}-macos-x64.tar.gz logstash-${{ env.LOGSTASH_VERSION }}
 
       - name: Upload logstash-oss-with-opensearch-output-plugin
         uses: actions/upload-artifact@v2
         with:
-          name: logstash-oss-with-opensearch-output-plugin-${{ env.LOGSTASH_VERSION }}-linux-x64
-          path: prepare-install/logstash-oss-with-opensearch-output-plugin-${{ env.LOGSTASH_VERSION }}-linux-x64.tar.gz
+          name: logstash-oss-with-opensearch-output-plugin-${{ env.LOGSTASH_VERSION }}-macos-x64
+          path: prepare-install/logstash-oss-with-opensearch-output-plugin-${{ env.LOGSTASH_VERSION }}-macos-x64.tar.gz

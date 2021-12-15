@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Copyright OpenSearch Contributors
 # SPDX-License-Identifier: Apache-2.0
 
@@ -11,6 +11,9 @@ cd $GIT_ROOT # We need to start from repository root
 
 rm -rf builds
 mkdir builds
+
+rvm install jruby
+rvm --default use jruby
 
 echo 'Building gem'
 gem build logstash-output-opensearch.gemspec

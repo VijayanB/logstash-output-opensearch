@@ -15,7 +15,7 @@ services:
       args:
         - INTEGRATION=true
         - SECURE_INTEGRATION=${SECURE_INTEGRATION:-false}
-        - OPENSEARCH_VERSION=${OPENSEARCH_VERSION:-latest}
+        - OPENSEARCH_VERSION=${OPENSEARCH_VERSION:-1.3.2}
     environment:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
